@@ -1,3 +1,132 @@
-compte rendu:
+compte rendu
+==================================================================================
 1 - ajout de la ligne admin.site.register(Choice) dans le fichier polls/admin.py
 2 - ajout 5 questions avec 3 reponses ok
+3 - Impossible dans l'administration
+5 - Impossible de se connecter
+==================================================================================
+shell:
+1)
+questions = Question.objects.all()
+>>> for question in questions:
+...     print(question.id, question.question_text, question.pub_date)
+...
+2 Quelle est la bonne façon de créer une liste en compréhension en Python ? 2025-02-13 05:00:00+00:00
+3 Quelle est la sortie de ce code ? 2025-02-15 11:00:00+00:00
+4 Quelle bibliothèque est couramment utilisée pour manipuler des tableaux en Python ? 2025-02-14 12:01:25+00:00
+5 Que fait la méthode strip() sur une chaîne de caractères en Python ? 2025-02-17 17:00:00+00:00
+6 Quelle est la différence entre une liste [] et un tuple () en Python ? 2025-02-04 12:02:37+00:00
+>>>
+
+2)
+>>> questions_2024 = Question.objects.filter(pub_date__year=2024)
+>>> for question in questions_2024:
+...     print(question.question_text, question.pub_date)
+...
+Quelle est la bonne façon de créer une liste en compréhension en Python ? 2024-12-27 05:00:00+00:00
+Quelle bibliothèque est couramment utilisée pour manipuler des tableaux en Python ? 2024-06-04 11:01:25+00:00
+Quelle est la différence entre une liste [] et un tuple () en Python ? 2024-11-13 12:02:37+00:00
+>>>
+
+3) 
+>>> question = Question.objects.get(id=2)
+>>> print("ID=", question.id)
+ID= 2
+>>> print("TEXT=", question.question_text)
+TEXT= Quelle est la bonne façon de créer une liste en compréhension en Python ?
+>>> print("DATE=", question.pub_date)
+DATE= 2024-12-27 05:00:00+00:00
+>>>
+
+4) 
+>>> for question in Question.objects.all():
+...     print(f"ID: {question.id} - {question.question_text}")
+...     for choice in Choice.objects.filter(question=question):
+...             print(f" - {choice.choice_text} (Votes: {choice.votes})")
+...
+ID: 2 - Quelle est la bonne façon de créer une liste en compréhension en Python ?
+ - list = [for i in range(5) i] (Votes: 0)
+ - list = [i for i in range(5)] (Votes: 0)
+ - list = (i for i in range(5)) (Votes: 0)
+ID: 3 - Quelle est la sortie de ce code ?
+ - True (Votes: 0)
+ - False (Votes: 0)
+ - None (Votes: 0)
+ID: 4 - Quelle bibliothèque est couramment utilisée pour manipuler des tableaux en Python ?
+ - Django (Votes: 0)
+ - NumPy (Votes: 0)
+ - Flask (Votes: 0)
+ID: 5 - Que fait la méthode strip() sur une chaîne de caractères en Python ?
+ - Supprime les espaces au début et à la fin (Votes: 0)
+ - Supprime tous les espaces de la chaîne (Votes: 0)
+ - Convertit la chaîne en minuscules (Votes: 0)
+ID: 6 - Quelle est la différence entre une liste [] et un tuple () en Python ?
+ - Les listes sont immuables et les tuples sont modifiables (Votes: 0)
+ - Les listes sont modifiables et les tuples sont immuables (Votes: 0)
+ - Il n’y a aucune différence (Votes: 0)
+>>>
+
+5)
+>>> for question in Question.objects.all():
+...     choice_count = Choice.objects.filter(question=question).count()
+...     print(f"ID: {question.id} - {question.question_text} ({choice_count} choix)")
+...
+ID: 2 - Quelle est la bonne façon de créer une liste en compréhension en Python ? (3 choix)
+ID: 3 - Quelle est la sortie de ce code ? (3 choix)
+ID: 4 - Quelle bibliothèque est couramment utilisée pour manipuler des tableaux en Python ? (3 choix)
+ID: 5 - Que fait la méthode strip() sur une chaîne de caractères en Python ? (3 choix)
+ID: 6 - Quelle est la différence entre une liste [] et un tuple () en Python ? (3 choix)
+>>>
+
+7)
+>>> questions = Question.objects.all().order_by("-pub_date")
+>>> for question in questions:
+...     print(f"ID: {question.id} - {question.question_text} (Publié le {question.pub_date})")
+...
+ID: 5 - Que fait la méthode strip() sur une chaîne de caractères en Python ? (Publié le 2025-02-17 17:00:00+00:00)
+ID: 3 - Quelle est la sortie de ce code ? (Publié le 2025-02-15 11:00:00+00:00)
+ID: 2 - Quelle est la bonne façon de créer une liste en compréhension en Python ? (Publié le 2024-12-27 05:00:00+00:00)
+ID: 6 - Quelle est la différence entre une liste [] et un tuple () en Python ? (Publié le 2024-11-13 12:02:37+00:00)
+ID: 4 - Quelle bibliothèque est couramment utilisée pour manipuler des tableaux en Python ? (Publié le 2024-06-04 11:01:25+00:00)
+>>>
+
+9) 
+>>> from django.utils import timezone
+>>> new_question = Question.objects.create( question_text="Quel est votre langage préféré?", pub_date=timezone.now())
+>>> print(new_question.id, new_question.question_text, new_question.pub_date)
+9 Quel est votre langage préféré? 2025-02-17 13:58:58.015659+00:00
+>>>
+
+10)
+>>> question = Question.objects.get(id=9)
+>>> Choice.objects.create(question=question, choice_text="Java", votes=0)
+<Choice: Java>
+>>> Choice.objects.create(question=question, choice_text="Python", votes=0)
+<Choice: Python>
+>>> Choice.objects.create(question=question, choice_text="Javascript", votes=0)
+<Choice: Javascript>
+>>> choices = Choice.objects.filter(question=question)
+>>> for choice in choices:
+...     print(f"Choix: {choice.choice_text} - Votes: {choice.votes}")
+...
+Choix: Java - Votes: 0
+Choix: Python - Votes: 0
+Choix: Javascript - Votes: 0
+>>>
+
+11) 
+>>> from datetime import timedelta
+>>> date_limite = timezone.now() - timedelta(days=7)
+>>> date_limite = timezone.now() - timedelta(days=100)
+>>> questions_recente = Question.objects.filter(pub_date__gte=date_limite)
+>>> for question in questions_recente:
+...     print(f"ID: {question.id} - {question.question_text} - Publiée le: {question.pub_date}")
+...
+ID: 2 - Quelle est la bonne façon de créer une liste en compréhension en Python ? - Publiée le: 2024-12-27 05:00:00+00:00
+ID: 3 - Quelle est la sortie de ce code ? - Publiée le: 2025-02-15 11:00:00+00:00
+ID: 5 - Que fait la méthode strip() sur une chaîne de caractères en Python ? - Publiée le: 2025-02-17 17:00:00+00:00
+ID: 6 - Quelle est la différence entre une liste [] et un tuple () en Python ? - Publiée le: 2024-11-13 12:02:37+00:00
+ID: 7 - Quel est votre langage préféré? - Publiée le: 2025-02-17 13:56:44.926362+00:00
+ID: 8 - Quel est votre langage préféré? - Publiée le: 2025-02-17 13:58:23.051093+00:00
+ID: 9 - Quel est votre langage préféré? - Publiée le: 2025-02-17 13:58:58.015659+00:00
+>>>
