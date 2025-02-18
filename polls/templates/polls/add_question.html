@@ -1,0 +1,9 @@
+<h1>Ajouter une question</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Créer</button>
+</form>
+
+<a href="{% url 'polls:index' %}">Retour aux sondages</a>

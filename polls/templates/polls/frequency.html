@@ -1,0 +1,13 @@
+<h1>Résultats du sondage : {{ question.question_text }}</h1>
+
+    {% if choices %}
+        <ul>
+        {% for choice_text, votes, percentage in choices %}
+            <li>{{ choice_text }} : {{ votes }} vote(s) ({{ percentage|floatformat:2 }}%)</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun vote enregistré.</p>
+    {% endif %}
+
+    <a href="{% url 'polls:all_polls' %}">Retour à la liste</a>

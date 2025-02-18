@@ -1,0 +1,21 @@
+<h1>Statistiques des Sondages</h1>
+
+<ul>
+    <li><strong>Total des sondages :</strong> {{ questions_count }}</li>
+    <li><strong>Total des choix possibles :</strong> {{ choices_count }}</li>
+    <li><strong>Total des votes enregistrés :</strong> {{ total_votes }}</li>
+    <li><strong>Moyenne des votes par sondage :</strong> {{ average_votes|floatformat:2 }}</li>
+    <li><strong>Dernière question enregistrée :</strong> {{ latest_question.question_text }}</li>
+
+    {% if most_popular_question %}
+        <li><strong>Question la plus populaire :</strong>
+            "{{ most_popular_question.question_text }}" ({{ most_popular_question.get_total_votes }} votes)
+        </li>
+    {% endif %}
+
+    {% if least_popular_question %}
+        <li><strong>Question la moins populaire :</strong>
+            "{{ least_popular_question.question_text }}" ({{ least_popular_question.get_total_votes }} votes)
+        </li>
+    {% endif %}
+</ul>
