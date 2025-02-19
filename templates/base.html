@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon Site de Sondages{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+
+    <header>
+        {% block header %}
+        <img src="{% static 'polls/images/banner1.jpg' %}" alt="Bandeau du site">
+        {% endblock %}
+    </header>
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+
+</body>
+</html>

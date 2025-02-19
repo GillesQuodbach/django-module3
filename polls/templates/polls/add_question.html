@@ -1,9 +1,20 @@
-<h1>Ajouter une question</h1>
+{% extends "base.html" %}
+{% load static %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Créer</button>
-</form>
+{% block title %}Ajouter une question{% endblock %}
 
-<a href="{% url 'polls:index' %}">Retour aux sondages</a>
+{% block header %}
+    <img src="{% static 'polls/images/banner2.jpg' %}" alt="Ajouter une question">
+{% endblock %}
+
+{% block main %}
+    <h1>Ajouter une question</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Créer</button>
+    </form>
+
+    <a href="{% url 'polls:index' %}">Retour aux sondages</a>
+{% endblock %}
