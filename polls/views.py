@@ -1,12 +1,10 @@
 from tempfile import template
-
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.views.generic import CreateView
-
 from .forms import QuestionForm
 from .models import Question, Choice
 # Create your views here.
