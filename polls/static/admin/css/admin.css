@@ -1,0 +1,36 @@
+.app-dashboard {
+    text-align: center;
+    margin: 20px;
+}
+
+.app-section {
+    border: 2px solid #ddd;
+    padding: 15px;
+    margin: 10px auto;
+    width: 50%;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.app-section h2 {
+    color: #333;
+}
+
+.app-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.app-section li {
+    list-style: none;
+}
+
+.app-section li a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.app-section li a:hover {
+    text-decoration: underline;
+}
