@@ -1,7 +1,7 @@
 from tempfile import template
 
 from django.db.models import Sum
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -74,6 +74,26 @@ class AddQuestionView(CreateView):
     form_class = QuestionForm
     template_name = "polls/add_question.html"
     success_url = reverse_lazy("polls:index")
+
+    def form_valid(self, form):
+        # sauvegarde de la question
+        self.object = form.save()
+
+        # on récupère les choix
+        choices = [
+            form.cleaned_data.get("choice1"),
+            form.cleaned_data.get("choice2"),
+            form.cleaned_data.get("choice3"),
+            form.cleaned_data.get("choice4"),
+            form.cleaned_data.get("choice5"),
+        ]
+
+        # on crée les choix non vides
+        for choice_text in choices:
+            if choice_text:
+                Choice.objects.create(question=self.object, choice_text=choice_text)
+        return redirect(self.success_url)
+
 
 
 def vote(request, question_id):
