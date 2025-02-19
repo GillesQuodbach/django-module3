@@ -7,6 +7,8 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ["question_text", "pub_date"]
     ordering = ["pub_date"]
     search_fields = ["question_text", "pub_date"]
+    # en changeant l'ordre on modifie l'affichage dans l'admin
+    fields = ["pub_date","question_text"]
 
 
 class ChoiceAdmin(admin.ModelAdmin):
