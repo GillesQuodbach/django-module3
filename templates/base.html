@@ -11,9 +11,15 @@
 <body>
 
     <header>
+        
         {% block header %}
         <img src="{% static 'polls/images/banner1.jpg' %}" alt="Bandeau du site">
         {% endblock %}
+        {% if user.is_authenticated %}
+            <p>Bienvenue, {{ user.username }} | <a href="{% url 'logout' %}">Se déconnecter</a> </p>
+        {% else %}
+            <p><a href="{% url 'login' %}">Se connecter</a></p>
+        {% endif %}
     </header>
 
     <main>

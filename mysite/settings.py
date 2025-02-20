@@ -1,5 +1,4 @@
 import os
-
 """
 Django settings for mysite project.
 
@@ -131,4 +130,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-print("Chemin du répertoire 'templates' :", BASE_DIR / "templates")
+
+LOGIN_URL = "/accounts/login"
+
+LOGIN_REDIRECT_URL = "/polls"

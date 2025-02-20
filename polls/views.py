@@ -7,6 +7,7 @@ from django.views import generic
 from django.views.generic import CreateView
 from .forms import QuestionForm
 from .models import Question, Choice
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
@@ -67,7 +68,7 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
-class AddQuestionView(CreateView):
+class AddQuestionView(LoginRequiredMixin, CreateView):
     model = Question
     form_class = QuestionForm
     template_name = "polls/add_question.html"
