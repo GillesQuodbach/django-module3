@@ -1,13 +1,13 @@
-from tempfile import template
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.views.generic import CreateView
-from .forms import QuestionForm
-from .models import Question, Choice
+from .forms import QuestionForm, LearnerSignUpForm
+from .models import Question, Choice, Course, Learner, User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -75,6 +75,11 @@ class AddQuestionView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("polls:index")
 
     def form_valid(self, form):
+        if not hasattr(self.request.user, "teacher"):
+            return redirect("polls:index")
+        
+        form.instance.course = form.cleaned_data["course"]
+        
         # sauvegarde de la question
         self.object = form.save()
 
@@ -122,3 +127,38 @@ def frequency(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     choices = question.get_choices()
     return render(request, "polls/frequency.html", {"question": question, "choices": choices})
+
+def learner_signup(request):
+    if request.method == "POST":
+        form = LearnerSignUpForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            # on ne sauvegarde pas le user directement
+            user = form.save(commit=False)
+            # # on sauvegarde le user
+            user.save()
+            # # on crée un Learner associé au user
+            # récupère en base le nouveau user
+            learner = Learner(user=user)
+            # # on sauvegarde le learner
+            learner.save()
+            # # on associe le Learner au cours
+            courses = form.cleaned_data["courses"]
+            learner.course.set(courses)
+
+            return redirect("polls:index")
+    else:
+        form = LearnerSignUpForm()
+    return render(request, "registration/signup.html", {"form": form})
+
+@login_required
+def join_course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    request.user.learner.courses.add(course)
+    return redirect("polls:courses")
+
+@login_required
+def leave_course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    request.user.learner.courses.remove(course)
+    return redirect("polls:courses")

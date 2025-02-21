@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import include, path
-from debug_toolbar.toolbar import debug_toolbar_urls
+from debug_toolbar.toolbar import debug_toolbar_urls # type: ignore
 from django.contrib.auth import views as auth_views
+from polls import views
 """
 URL configuration for mysite project.
 
@@ -27,5 +28,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/polls/'), name='logout'),
+    path("signup/", views.learner_signup, name="signup"),
+    path("join_course/<int:course_id>", views.join_course, name="join_course"),
+    path("leave_course/<int:course_id>", views.leave_course, name="leave_course"),
 ] + debug_toolbar_urls()
 

@@ -3,8 +3,30 @@ from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
 from django.contrib import admin
+from django.contrib.auth.models import User
 # Create your models here.
 
+
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.user.username
+    
+
+class Course(models.Model):
+    name = models.CharField(max_length=200)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+    
+class Learner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    course = models.ManyToManyField(Course, related_name="learners")
+    def __str__(self):
+        
+        return self.user.username
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)

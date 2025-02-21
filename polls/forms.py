@@ -1,5 +1,5 @@
 from django import forms
-from .models import Question
+from .models import Question, User, Learner, Course
 
 
 class QuestionForm(forms.ModelForm):
@@ -16,3 +16,20 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ["question_text"]
 
+class LearnerSignUpForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, help_text="")
+    password = forms.CharField(widget=forms.PasswordInput)
+    courses = forms.ModelMultipleChoiceField(queryset=Course.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    
+    class Meta:
+        model = User
+        fields = ["username", "password"]
+        
+    def save(self, commit = True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+            learner = Learner.objects.create(user=user)
+            learner.courses.set(self.cleaned_data["courses"])
+        return user
